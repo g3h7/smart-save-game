@@ -25,7 +25,7 @@ const Index = () => {
             </div>
           </div>
 
-          <ModulesGrid />
+          
         </main>
       </div>
     </div>
