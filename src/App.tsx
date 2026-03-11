@@ -7,6 +7,8 @@ import Login from "./pages/Login.tsx";
 import Index from "./pages/Index.tsx";
 import Financas from "./pages/Financas.tsx";
 import GameMap from "./pages/GameMap.tsx";
+import Modulos from "./pages/Modulos.tsx";
+import Personagem from "./pages/Personagem.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
