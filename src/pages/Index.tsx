@@ -1,11 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import GameSidebar from "@/components/GameSidebar";
+import GameHeader from "@/components/GameHeader";
+import WelcomeBanner from "@/components/WelcomeBanner";
+import FinanceSummary from "@/components/FinanceSummary";
+import AvatarProgress from "@/components/AvatarProgress";
+import XPTracker from "@/components/XPTracker";
+import ModulesGrid from "@/components/ModulesGrid";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="flex h-screen bg-background overflow-hidden">
+      <GameSidebar />
+
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <GameHeader />
+
+        <main className="flex-1 overflow-y-auto p-6 space-y-6">
+          <WelcomeBanner />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <FinanceSummary />
+            <div className="space-y-6">
+              <AvatarProgress />
+              <XPTracker />
+            </div>
+          </div>
+
+          <ModulesGrid />
+        </main>
       </div>
     </div>
   );
