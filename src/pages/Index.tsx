@@ -4,7 +4,7 @@ import WelcomeBanner from "@/components/WelcomeBanner";
 import FinanceSummary from "@/components/FinanceSummary";
 import AvatarProgress from "@/components/AvatarProgress";
 import XPTracker from "@/components/XPTracker";
-import ModulesGrid from "@/components/ModulesGrid";
+
 
 const Index = () => {
   return (
@@ -25,7 +25,7 @@ const Index = () => {
             </div>
           </div>
 
-          <ModulesGrid />
+          
         </main>
       </div>
     </div>

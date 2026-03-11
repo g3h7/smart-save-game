@@ -6,8 +6,8 @@ const menuItems = [
   { icon: Home, label: "INÍCIO", id: "inicio", route: "/dashboard" },
   { icon: DollarSign, label: "FINANÇAS", id: "financas", route: "/financas" },
   { icon: Map, label: "MAPA", id: "mapa", route: "/mapa" },
-  { icon: User, label: "PERSONAGEM", id: "personagem", route: "/dashboard" },
-  { icon: BookOpen, label: "CONTEÚDO", id: "conteudo", route: "/dashboard" },
+  { icon: BookOpen, label: "MÓDULOS", id: "modulos", route: "/modulos" },
+  { icon: User, label: "PERSONAGEM", id: "personagem", route: "/personagem" },
   { icon: Settings, label: "PERFIL", id: "perfil", route: "/dashboard" },
 ];
 
