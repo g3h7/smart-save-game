@@ -44,6 +44,9 @@ const GameMap = () => {
       <div className="flex-1 relative overflow-hidden" ref={mapRef} onClick={handleMapClick} tabIndex={0}>
         <img src={gameMapImg} alt="Mapa do jogo" className="w-full h-full object-cover" draggable={false} />
 
+        {/* NPCs */}
+        <MapNPCs />
+
         {/* Location markers */}
         {locations.map((loc) => (
           <div key={loc.id} className="absolute transform -translate-x-1/2 -translate-y-1/2" style={{ left: `${loc.x}%`, top: `${loc.y}%` }}>
