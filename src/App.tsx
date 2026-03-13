@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GameMapProvider } from "@/contexts/GameMapContext";
+import { CharacterProvider } from "@/contexts/CharacterContext";
 import Login from "./pages/Login.tsx";
 import Index from "./pages/Index.tsx";
 import Financas from "./pages/Financas.tsx";
