@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { GameMapProvider } from "@/contexts/GameMapContext";
 import Login from "./pages/Login.tsx";
 import Index from "./pages/Index.tsx";
 import Financas from "./pages/Financas.tsx";
@@ -16,20 +17,22 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Index />} />
-          <Route path="/financas" element={<Financas />} />
-          <Route path="/mapa" element={<GameMap />} />
-          <Route path="/modulos" element={<Modulos />} />
-          <Route path="/personagem" element={<Personagem />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <GameMapProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<Index />} />
+            <Route path="/financas" element={<Financas />} />
+            <Route path="/mapa" element={<GameMap />} />
+            <Route path="/modulos" element={<Modulos />} />
+            <Route path="/personagem" element={<Personagem />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </GameMapProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
