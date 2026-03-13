@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Coins, MapPin } from "lucide-react";
 import gameMapImg from "@/assets/game-map.png";
 import { useGameMap, locations } from "@/contexts/GameMapContext";
+import MapNPCs from "@/components/MapNPCs";
 
 const GameMap = () => {
   const navigate = useNavigate();
@@ -42,6 +43,9 @@ const GameMap = () => {
       {/* Map area */}
       <div className="flex-1 relative overflow-hidden" ref={mapRef} onClick={handleMapClick} tabIndex={0}>
         <img src={gameMapImg} alt="Mapa do jogo" className="w-full h-full object-cover" draggable={false} />
+
+        {/* NPCs */}
+        <MapNPCs />
 
         {/* Location markers */}
         {locations.map((loc) => (
