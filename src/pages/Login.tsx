@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Gamepad2, Shield, TrendingUp, Trophy, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,17 +14,17 @@ const Login = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [generalError, setGeneralError] = useState("");
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
-    navigate("/dashboard", { replace: true });
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     setGeneralError("");
 
-    // Validate with Zod
     const schema = isLogin ? loginSchema : signupSchema;
     const dataToValidate = isLogin
       ? { email: form.email, password: form.password }
@@ -49,8 +49,15 @@ const Login = () => {
         await signup(form.name, form.email, form.password);
       }
       navigate("/dashboard");
-    } catch {
-      setGeneralError("Ocorreu um erro. Tente novamente.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Ocorreu um erro. Tente novamente.";
+      if (message.includes("Invalid login")) {
+        setGeneralError("E-mail ou senha incorretos.");
+      } else if (message.includes("already registered")) {
+        setGeneralError("Este e-mail já está cadastrado.");
+      } else {
+        setGeneralError(message);
+      }
     } finally {
       setLoading(false);
     }
