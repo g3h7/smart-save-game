@@ -1,21 +1,59 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Gamepad2, Shield, TrendingUp, Trophy } from "lucide-react";
+import { Eye, EyeOff, Gamepad2, Shield, TrendingUp, Trophy, AlertCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { loginSchema, signupSchema } from "@/lib/validations";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login, signup, isAuthenticated } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    navigate("/dashboard", { replace: true });
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+    setGeneralError("");
+
+    // Validate with Zod
+    const schema = isLogin ? loginSchema : signupSchema;
+    const dataToValidate = isLogin
+      ? { email: form.email, password: form.password }
+      : { name: form.name, email: form.email, password: form.password };
+
+    const result = schema.safeParse(dataToValidate);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        const field = err.path[0] as string;
+        if (!fieldErrors[field]) fieldErrors[field] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("educash-user", JSON.stringify({ name: form.name || "Jogador", email: form.email }));
+    try {
+      if (isLogin) {
+        await login(form.email, form.password);
+      } else {
+        await signup(form.name, form.email, form.password);
+      }
       navigate("/dashboard");
-    }, 800);
+    } catch {
+      setGeneralError("Ocorreu um erro. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const features = [
@@ -68,10 +106,18 @@ const Login = () => {
             </p>
           </div>
 
+          {generalError && (
+            <div className="flex items-center gap-2 bg-destructive/10 text-destructive rounded-xl px-4 py-3 text-sm font-body">
+              <AlertCircle size={16} className="shrink-0" />
+              {generalError}
+            </div>
+          )}
+
           {/* Toggle tabs */}
           <div className="flex bg-muted rounded-xl p-1">
             <button
-              onClick={() => setIsLogin(true)}
+              type="button"
+              onClick={() => { setIsLogin(true); setErrors({}); setGeneralError(""); }}
               className={`flex-1 py-2.5 rounded-lg font-display font-bold text-sm transition-all ${
                 isLogin ? "bg-primary text-primary-foreground shadow-button" : "text-muted-foreground"
               }`}
@@ -79,7 +125,8 @@ const Login = () => {
               ENTRAR
             </button>
             <button
-              onClick={() => setIsLogin(false)}
+              type="button"
+              onClick={() => { setIsLogin(false); setErrors({}); setGeneralError(""); }}
               className={`flex-1 py-2.5 rounded-lg font-display font-bold text-sm transition-all ${
                 !isLogin ? "bg-primary text-primary-foreground shadow-button" : "text-muted-foreground"
               }`}
@@ -88,18 +135,22 @@ const Login = () => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {!isLogin && (
               <div>
                 <label className="font-display text-sm font-semibold text-foreground block mb-1.5">NOME DO HERÓI</label>
                 <input
                   type="text"
-                  required={!isLogin}
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Ex: CavaleiroDasFinanças"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                  maxLength={50}
+                  autoComplete="username"
+                  className={`w-full px-4 py-3 rounded-xl border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all ${
+                    errors.name ? "border-destructive focus:ring-destructive" : "border-border focus:ring-ring"
+                  }`}
                 />
+                {errors.name && <p className="text-destructive text-xs font-body mt-1">{errors.name}</p>}
               </div>
             )}
 
@@ -107,12 +158,16 @@ const Login = () => {
               <label className="font-display text-sm font-semibold text-foreground block mb-1.5">E-MAIL</label>
               <input
                 type="email"
-                required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="heroi@educash.com"
-                className="w-full px-4 py-3 rounded-xl border border-border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                maxLength={255}
+                autoComplete="email"
+                className={`w-full px-4 py-3 rounded-xl border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all ${
+                  errors.email ? "border-destructive focus:ring-destructive" : "border-border focus:ring-ring"
+                }`}
               />
+              {errors.email && <p className="text-destructive text-xs font-body mt-1">{errors.email}</p>}
             </div>
 
             <div>
@@ -120,20 +175,30 @@ const Login = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  required
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all pr-12"
+                  maxLength={128}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
+                  className={`w-full px-4 py-3 rounded-xl border bg-card font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all pr-12 ${
+                    errors.password ? "border-destructive focus:ring-destructive" : "border-border focus:ring-ring"
+                  }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+              {errors.password && <p className="text-destructive text-xs font-body mt-1">{errors.password}</p>}
+              {!isLogin && !errors.password && (
+                <p className="text-muted-foreground text-xs font-body mt-1">
+                  Mín. 8 caracteres, com maiúscula, minúscula, número e caractere especial
+                </p>
+              )}
             </div>
 
             <button
@@ -155,7 +220,8 @@ const Login = () => {
           <p className="text-center text-muted-foreground text-xs font-body">
             {isLogin ? "Não tem conta? " : "Já tem conta? "}
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              type="button"
+              onClick={() => { setIsLogin(!isLogin); setErrors({}); setGeneralError(""); }}
               className="text-primary font-semibold hover:underline"
             >
               {isLogin ? "Crie agora!" : "Entre aqui!"}
