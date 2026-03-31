@@ -126,7 +126,7 @@ const Modulos = () => {
                   className={`bg-card rounded-2xl p-5 shadow-card game-card-hover flex flex-col gap-3 relative ${config.opacity}`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`${mod.color} w-14 h-14 rounded-xl flex items-center justify-center shrink-0`}>
+                    <div className={`${mod.color} w-14 h-14 rounded-full flex items-center justify-center shrink-0`}>
                       {isLocked ? (
                         <Lock className="text-primary-foreground" size={24} />
                       ) : mod.status === "completed" ? (
