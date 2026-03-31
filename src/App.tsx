@@ -36,6 +36,7 @@ const App = () => (
                 <Route path="/personagem" element={<ProtectedRoute><Personagem /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <ChatBot />
             </BrowserRouter>
           </CharacterProvider>
         </GameMapProvider>
