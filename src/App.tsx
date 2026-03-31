@@ -14,6 +14,7 @@ import GameMap from "./pages/GameMap.tsx";
 import Modulos from "./pages/Modulos.tsx";
 import Personagem from "./pages/Personagem.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import ChatBot from "./components/ChatBot";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
                 <Route path="/personagem" element={<ProtectedRoute><Personagem /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <ChatBot />
             </BrowserRouter>
           </CharacterProvider>
         </GameMapProvider>
