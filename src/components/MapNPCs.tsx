@@ -41,14 +41,14 @@ function isOnRoad(x: number, y: number): boolean {
 }
 
 const npcTemplates = [
-  { emoji: "👩‍💼", color: "hsl(var(--game-blue))", name: "Comerciante" },
+  { emoji: "👩‍💼", color: "hsl(var(--game-navy))", name: "Comerciante" },
   { emoji: "👨‍🌾", color: "hsl(var(--game-green))", name: "Fazendeiro" },
   { emoji: "👷", color: "hsl(var(--accent))", name: "Construtor" },
-  { emoji: "🧙", color: "hsl(187 70% 42%)", name: "Mago" },
-  { emoji: "👩‍🏫", color: "hsl(var(--game-red))", name: "Professora" },
-  { emoji: "🧑‍🍳", color: "hsl(var(--game-gold))", name: "Chef" },
-  { emoji: "👮", color: "hsl(var(--game-blue))", name: "Guarda" },
-  { emoji: "🧑‍🔧", color: "hsl(25 60% 40%)", name: "Mecânico" },
+  { emoji: "🧙", color: "hsl(var(--game-orange))", name: "Mago" },
+  { emoji: "👩‍🏫", color: "hsl(var(--game-green-dark))", name: "Professora" },
+  { emoji: "🧑‍🍳", color: "hsl(var(--game-orange-dark))", name: "Chef" },
+  { emoji: "👮", color: "hsl(var(--game-navy-dark))", name: "Guarda" },
+  { emoji: "🧑‍🔧", color: "hsl(var(--game-navy))", name: "Mecânico" },
 ];
 
 function createNPC(id: number): NPC {
