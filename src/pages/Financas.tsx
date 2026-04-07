@@ -9,7 +9,7 @@ interface Investment {
   type: string;
   investedAt: Date;
   amount: number;
-  rate: number; // monthly %
+  rate: number;
   risk: "baixo" | "médio" | "alto";
 }
 
@@ -75,12 +75,12 @@ const Financas = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card border-b border-border px-6 py-4 flex items-center gap-4 shadow-card">
-        <button onClick={() => navigate("/dashboard")} className="text-muted-foreground hover:text-foreground transition-colors">
+      <div className="bg-primary border-b border-sidebar-border px-6 py-4 flex items-center gap-4">
+        <button onClick={() => navigate("/dashboard")} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
           <ArrowLeft size={24} />
         </button>
-        <DollarSign className="text-primary" size={24} />
-        <h1 className="font-display text-xl font-bold text-foreground">MEUS INVESTIMENTOS</h1>
+        <DollarSign className="text-game-green" size={24} />
+        <h1 className="font-display text-xl font-bold text-primary-foreground">MEUS INVESTIMENTOS</h1>
       </div>
 
       <div className="p-6 max-w-6xl mx-auto space-y-6">
@@ -166,14 +166,14 @@ const Financas = () => {
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={generateChartData(selected)}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(210, 20%, 90%)" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 14%, 90%)" />
                       <XAxis dataKey="month" tick={{ fontSize: 10 }} />
                       <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `R$${v}`} />
                       <Tooltip
                         formatter={(value: number) => [`R$ ${value.toLocaleString("pt-BR")}`, "Valor"]}
                         contentStyle={{ borderRadius: 12, fontFamily: "Nunito", fontSize: 12 }}
                       />
-                      <Line type="monotone" dataKey="valor" stroke="hsl(187, 70%, 42%)" strokeWidth={3} dot={false} />
+                      <Line type="monotone" dataKey="valor" stroke="hsl(222, 75%, 18%)" strokeWidth={3} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>

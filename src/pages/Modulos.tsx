@@ -9,7 +9,7 @@ const modules = [
     type: "QUIZ",
     action: "JOGAR QUIZ",
     icon: ClipboardList,
-    color: "bg-game-gold",
+    color: "bg-accent",
     status: "completed",
     xp: 50,
   },
@@ -39,7 +39,7 @@ const modules = [
     type: "QUIZ",
     action: "JOGAR QUIZ",
     icon: ClipboardList,
-    color: "bg-game-blue",
+    color: "bg-game-green",
     status: "available",
     xp: 80,
   },
@@ -59,7 +59,7 @@ const modules = [
     type: "VÍDEO",
     action: "COMEÇAR",
     icon: Play,
-    color: "bg-game-teal-dark",
+    color: "bg-game-navy-dark",
     status: "locked",
     xp: 40,
   },
@@ -69,7 +69,7 @@ const modules = [
     type: "VÍDEO",
     action: "COMEÇAR",
     icon: Play,
-    color: "bg-game-teal-dark",
+    color: "bg-game-navy-dark",
     status: "locked",
     xp: 40,
   },
@@ -79,7 +79,7 @@ const modules = [
     type: "VÍDEO",
     action: "COMEÇAR",
     icon: Play,
-    color: "bg-game-teal-dark",
+    color: "bg-game-navy-dark",
     status: "locked",
     xp: 40,
   },
@@ -89,7 +89,7 @@ const modules = [
     type: "QUIZ",
     action: "JOGAR QUIZ",
     icon: ClipboardList,
-    color: "bg-game-purple",
+    color: "bg-accent",
     status: "locked",
     xp: 150,
   },
@@ -97,7 +97,7 @@ const modules = [
 
 const statusConfig = {
   completed: { badge: "CONCLUÍDO", badgeClass: "bg-game-green text-primary-foreground", opacity: "" },
-  available: { badge: "DISPONÍVEL", badgeClass: "bg-game-gold text-accent-foreground", opacity: "" },
+  available: { badge: "DISPONÍVEL", badgeClass: "bg-accent text-accent-foreground", opacity: "" },
   locked: { badge: "BLOQUEADO", badgeClass: "bg-muted text-muted-foreground", opacity: "opacity-60" },
 };
 
@@ -111,7 +111,7 @@ const Modulos = () => {
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl font-bold text-foreground">📚 MÓDULOS DE APRENDIZADO</h2>
             <div className="flex items-center gap-2 bg-card rounded-xl px-4 py-2 shadow-card">
-              <Star className="text-game-gold" size={20} />
+              <Star className="text-accent" size={20} />
               <span className="font-display font-bold text-sm text-foreground">3/9 completos</span>
             </div>
           </div>
@@ -149,7 +149,7 @@ const Modulos = () => {
                   <p className="text-xs text-muted-foreground">{mod.description}</p>
 
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs font-bold text-game-gold flex items-center gap-1">
+                    <span className="text-xs font-bold text-accent flex items-center gap-1">
                       <Star size={14} /> +{mod.xp} XP
                     </span>
                     <button
@@ -157,7 +157,7 @@ const Modulos = () => {
                       className={`font-display font-bold text-xs px-4 py-1.5 rounded-lg transition-all
                         ${isLocked
                           ? "bg-muted text-muted-foreground cursor-not-allowed"
-                          : "bg-primary text-primary-foreground shadow-button hover:brightness-110"
+                          : "bg-accent text-accent-foreground shadow-button hover:brightness-110"
                         }`}
                     >
                       {mod.action}

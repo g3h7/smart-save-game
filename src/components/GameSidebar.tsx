@@ -16,7 +16,7 @@ const GameSidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-24 bg-card border-r border-border flex flex-col items-center py-6 gap-2 shadow-card">
+    <aside className="w-24 bg-sidebar border-r border-sidebar-border flex flex-col items-center py-6 gap-2">
       {menuItems.map((item) => {
         const isActive = active === item.id;
         return (
@@ -25,8 +25,8 @@ const GameSidebar = () => {
             onClick={() => { setActive(item.id); navigate(item.route); }}
             className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl w-20 transition-all font-display text-xs font-semibold
               ${isActive 
-                ? "bg-primary text-primary-foreground shadow-button" 
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground" 
+                : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
               }`}
           >
             <item.icon size={24} />
