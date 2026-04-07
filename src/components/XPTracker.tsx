@@ -22,14 +22,14 @@ const XPTracker = () => {
             {m.value}
           </span>
         ))}
-        <span className="text-xs font-display font-bold px-3 py-1 rounded-full bg-primary text-primary-foreground">
+        <span className="text-xs font-display font-bold px-3 py-1 rounded-full bg-accent text-accent-foreground">
           +XP
         </span>
       </div>
 
       <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-game-blue xp-bar-animated"
+          className="h-full rounded-full bg-game-green xp-bar-animated"
           style={{ "--xp-width": "65%" } as React.CSSProperties}
         />
       </div>

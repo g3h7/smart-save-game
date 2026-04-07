@@ -6,7 +6,7 @@ const modules = [
     type: "QUIZ",
     action: "JOGAR QUIZ",
     icon: ClipboardList,
-    color: "bg-game-gold",
+    color: "bg-accent",
   },
   {
     title: "AULA 5: FUNDOS IMOBILIÁRIOS",
@@ -20,14 +20,14 @@ const modules = [
     type: "VÍDEO",
     action: "COMEÇAR",
     icon: Play,
-    color: "bg-game-teal-dark",
+    color: "bg-game-navy-dark",
   },
   {
     title: "QUIZ DE REVISÃO",
     type: "QUIZ",
     action: "JOGAR QUIZ",
     icon: ClipboardList,
-    color: "bg-game-blue",
+    color: "bg-game-green",
   },
 ];
 
@@ -44,7 +44,7 @@ const ModulesGrid = () => {
             <div className="flex-1">
               <h4 className="font-display font-bold text-sm text-foreground">{mod.title}</h4>
               <p className="text-xs text-muted-foreground font-semibold">{mod.type}</p>
-              <button className="mt-2 bg-primary text-primary-foreground font-display font-bold text-xs px-4 py-1.5 rounded-lg shadow-button hover:brightness-110 transition-all">
+              <button className="mt-2 bg-accent text-accent-foreground font-display font-bold text-xs px-4 py-1.5 rounded-lg shadow-button hover:brightness-110 transition-all">
                 {mod.action}
               </button>
             </div>
