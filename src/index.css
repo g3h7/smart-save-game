@@ -6,72 +6,74 @@
 
 @layer base {
   :root {
-    /* Neutros — Branco Neve e Azul Antracite */
-    --background: 210 25% 97%;
-    --foreground: 215 40% 16%;
+    /* Neutros — Branco Neve / Cinza / Azul Antracite */
+    --background: 220 20% 97%;
+    --foreground: 222 30% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 40% 16%;
+    --card-foreground: 222 30% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 40% 16%;
+    --popover-foreground: 222 30% 18%;
 
-    /* Primária — Teal/Ciano profundo (Confiança/Tech) */
-    --primary: 182 72% 32%;
+    /* Primária — Navy Blue (Confiança/Segurança) #0D2251 */
+    --primary: 222 75% 18%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 30% 94%;
-    --secondary-foreground: 215 40% 16%;
+    --secondary: 220 20% 94%;
+    --secondary-foreground: 222 30% 18%;
 
-    --muted: 210 18% 92%;
-    --muted-foreground: 215 15% 48%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 10% 46%;
 
-    /* Destaque — Amarelo Vibrante (Ação/Ouro) */
-    --accent: 48 96% 53%;
-    --accent-foreground: 35 55% 18%;
+    /* Destaque — Laranja (Ação/Gamificação) #F57C00 */
+    --accent: 30 100% 48%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 18% 88%;
-    --input: 210 18% 88%;
-    --ring: 182 72% 32%;
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 222 75% 18%;
 
     --radius: 0.75rem;
 
     /* Game-specific tokens */
-    --game-teal: 182 72% 32%;
-    --game-teal-light: 182 45% 92%;
-    --game-teal-dark: 182 80% 22%;
-    /* Secundária — Verde Esmeralda vibrante (Crescimento) */
-    --game-green: 160 65% 40%;
-    --game-green-light: 160 40% 92%;
-    --game-gold: 48 96% 53%;
-    --game-gold-dark: 42 88% 42%;
-    --game-red: 0 68% 50%;
-    --game-red-light: 0 50% 93%;
-    --game-blue: 215 70% 50%;
-    --game-blue-light: 215 55% 93%;
-    --game-purple: 268 50% 52%;
+    /* Navy Blue shades */
+    --game-navy: 222 75% 18%;
+    --game-navy-light: 222 30% 94%;
+    --game-navy-dark: 222 80% 12%;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 215 15% 48%;
-    --sidebar-primary: 182 72% 32%;
+    /* Emerald Green (Dinheiro/Progresso) #16A275 */
+    --game-green: 157 76% 36%;
+    --game-green-light: 157 40% 92%;
+    --game-green-dark: 157 80% 26%;
+
+    /* Orange (Ação/Gamificação) #F57C00 */
+    --game-orange: 30 100% 48%;
+    --game-orange-light: 30 60% 92%;
+    --game-orange-dark: 30 100% 38%;
+
+    /* Sidebar */
+    --sidebar-background: 222 75% 18%;
+    --sidebar-foreground: 220 20% 80%;
+    --sidebar-primary: 30 100% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 182 50% 94%;
-    --sidebar-accent-foreground: 182 80% 22%;
-    --sidebar-border: 210 18% 92%;
-    --sidebar-ring: 182 72% 32%;
+    --sidebar-accent: 222 60% 26%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 222 60% 24%;
+    --sidebar-ring: 30 100% 48%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(182 72% 32%), hsl(182 80% 22%));
-    --gradient-gold: linear-gradient(135deg, hsl(48 96% 53%), hsl(42 88% 42%));
-    --gradient-xp: linear-gradient(90deg, hsl(182 72% 38%), hsl(182 72% 32%));
-    --gradient-positive: linear-gradient(90deg, hsl(160 65% 40%), hsl(160 72% 32%));
+    --gradient-hero: linear-gradient(135deg, hsl(222 75% 18%), hsl(222 80% 12%));
+    --gradient-green: linear-gradient(135deg, hsl(157 76% 36%), hsl(157 80% 26%));
+    --gradient-xp: linear-gradient(90deg, hsl(157 76% 40%), hsl(157 76% 36%));
+    --gradient-orange: linear-gradient(135deg, hsl(30 100% 48%), hsl(30 100% 38%));
 
     /* Shadows */
-    --shadow-card: 0 2px 12px hsl(215 20% 78% / 0.5);
-    --shadow-button: 0 3px 8px hsl(182 72% 32% / 0.3);
+    --shadow-card: 0 2px 12px hsl(222 20% 78% / 0.4);
+    --shadow-button: 0 3px 8px hsl(222 75% 18% / 0.3);
   }
 }
 
@@ -105,5 +107,5 @@
 }
 .game-card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px hsl(210 20% 70% / 0.4);
+  box-shadow: 0 6px 20px hsl(222 20% 70% / 0.4);
 }
