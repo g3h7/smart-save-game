@@ -5,6 +5,8 @@ export interface CharacterAppearance {
   hairStyle: string;
   hairColor: string;
   outfit: string;
+  accessory: string;
+  weapon: string;
 }
 
 interface CharacterContextType {
@@ -21,6 +23,8 @@ const defaultAppearance: CharacterAppearance = {
   hairStyle: "short",
   hairColor: "black",
   outfit: "knight",
+  accessory: "none",
+  weapon: "none",
 };
 
 const CharacterContext = createContext<CharacterContextType | null>(null);
