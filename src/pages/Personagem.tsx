@@ -1,7 +1,9 @@
 import GameSidebar from "@/components/GameSidebar";
 import GameHeader from "@/components/GameHeader";
 import { useState } from "react";
-import { Shield, Sword, Crown, Star, Award, Gem, Coins, Check, Lock } from "lucide-react";
+import { Shield, Sword, Crown, Star, Award, Gem, Coins, Check, Lock, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { useCharacter } from "@/contexts/CharacterContext";
 import { toast } from "sonner";
 
