@@ -1,7 +1,9 @@
 import GameSidebar from "@/components/GameSidebar";
 import GameHeader from "@/components/GameHeader";
 import { useState } from "react";
-import { Shield, Sword, Crown, Star, Award, Gem, Coins, Check, Lock } from "lucide-react";
+import { Shield, Sword, Crown, Star, Award, Gem, Coins, Check, Lock, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { useCharacter } from "@/contexts/CharacterContext";
 import { toast } from "sonner";
 
@@ -110,7 +112,14 @@ function AvatarPreview({ skinColor, hairStyle, hairColor, outfit }: {
 
 const Personagem = () => {
   const { appearance, updateAppearance, ownedOutfits, buyOutfit, coins } = useCharacter();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"aparencia" | "roupas" | "emblemas" | "cartao">("aparencia");
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const playerName = localStorage.getItem("playerName") || "Jogador";
 
@@ -139,9 +148,18 @@ const Personagem = () => {
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl font-bold text-foreground">🎭 PERSONAGEM</h2>
-            <div className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full">
-              <Coins className="text-accent" size={16} />
-              <span className="font-display font-bold text-sm text-accent-foreground">{coins.toLocaleString("pt-BR")}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full">
+                <Coins className="text-accent" size={16} />
+                <span className="font-display font-bold text-sm text-accent-foreground">{coins.toLocaleString("pt-BR")}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-destructive/10 hover:bg-destructive/20 text-destructive px-4 py-2 rounded-xl font-display font-bold text-xs transition-all"
+              >
+                <LogOut size={16} />
+                SAIR
+              </button>
             </div>
           </div>
 
