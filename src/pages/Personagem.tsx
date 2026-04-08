@@ -112,7 +112,14 @@ function AvatarPreview({ skinColor, hairStyle, hairColor, outfit }: {
 
 const Personagem = () => {
   const { appearance, updateAppearance, ownedOutfits, buyOutfit, coins } = useCharacter();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"aparencia" | "roupas" | "emblemas" | "cartao">("aparencia");
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const playerName = localStorage.getItem("playerName") || "Jogador";
 
