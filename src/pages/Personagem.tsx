@@ -148,9 +148,18 @@ const Personagem = () => {
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-2xl font-bold text-foreground">🎭 PERSONAGEM</h2>
-            <div className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full">
-              <Coins className="text-accent" size={16} />
-              <span className="font-display font-bold text-sm text-accent-foreground">{coins.toLocaleString("pt-BR")}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-accent/20 px-3 py-1.5 rounded-full">
+                <Coins className="text-accent" size={16} />
+                <span className="font-display font-bold text-sm text-accent-foreground">{coins.toLocaleString("pt-BR")}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-destructive/10 hover:bg-destructive/20 text-destructive px-4 py-2 rounded-xl font-display font-bold text-xs transition-all"
+              >
+                <LogOut size={16} />
+                SAIR
+              </button>
             </div>
           </div>
 
