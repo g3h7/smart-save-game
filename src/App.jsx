@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Modulos from './pages/Modulos';
 import Financas from './pages/Financas';
 import Personagem from './pages/Personagem';
+import Mapa from './pages/Mapa';
 
 export default function App() {
   const [activeRoute, setActiveRoute] = useState('inicio');
@@ -21,14 +22,7 @@ export default function App() {
       case 'personagem':
         return <Personagem />;
       case 'mapa':
-        return (
-          <div className="flex-1 flex items-center justify-center h-full animate-in fade-in duration-500">
-            <div className="text-center">
-              <h2 className="text-3xl font-display font-black text-sidebar mb-2">ÁREA DO MAPA (Em breve)</h2>
-              <p className="text-gray-400">O motor gráfico Phaser com o Tiled será integrado nesta aba futuramente.</p>
-            </div>
-          </div>
-        );
+        return <Mapa />;
       default:
         return (
           <div className="flex-1 flex items-center justify-center h-full animate-in fade-in duration-500">
