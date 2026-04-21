@@ -36,16 +36,13 @@ export class Preloader extends Scene {
         /* ========================================================= */
         
         // 1. O Mapa JSON do Tiled
-        // O Phaser tentará buscar na rota de build do vite: public/assets/maps/...
-        this.load.tilemapTiledJSON('mapa-tiled', 'assets/maps/mapa-teste.json');
+        this.load.tilemapTiledJSON('mapa-educash', '/Conteudo_educash/maps/mapa.json');
 
         // 2. O Tileset (A Foto do Chão e das paredes usada no Tiled)
-        // OBS: Dentro do seu arquivo Tiled (.json), a propriedade "name" do tileset precisa casar lá 
-        // mas aqui pelo menos a foto entra na GPU!
-        this.load.image('tiles-cena', 'assets/tilesets/tiles-padrao.png');
+        this.load.image('tiles-serene', '/Conteudo_educash/tilesets/Serene_Village_32x32.png');
 
-        // 3. A Matriz (Spritesheet) do seu personagem andando 32x32px
-        this.load.spritesheet('personagem', 'assets/sprites/personagem-base.png', { 
+        // 3. A Matriz (Spritesheet) do seu personagem
+        this.load.spritesheet('player', '/Conteudo_educash/sprites/mafia - bold.png', { 
             frameWidth: 32, 
             frameHeight: 32 
         });
