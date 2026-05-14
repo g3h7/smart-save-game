@@ -7,15 +7,14 @@ export class MainScene extends Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor('#1e293b');
+        // Removido o setBackgroundColor para garantir que o fundo do canvas fique neutro e não cubra o mapa
 
         // 1. Instância do Mapa Tiled (educash_01.json)
         const map = this.make.tilemap({ key: 'mapa-educash' });
 
-        // 2. Adição do Tileset
-        // O nome 'Serene_Village_32x32' deve ser idêntico ao 'name' dentro do JSON.
+        // Sincronize o Tileset: Nome exato "Serene_Village_32x32" retirado do educash_01.json
         const tileset = map.addTilesetImage('Serene_Village_32x32', 'tiles-serene');
-        
+
         if (!tileset) {
             console.error('ERRO: Tileset "Serene_Village_32x32" não encontrado no JSON!');
         }
@@ -54,7 +53,7 @@ export class MainScene extends Scene {
         // 8. Câmera seguindo o Player
         this.cameras.main.setBounds(0, 0, 1920, 1920);
         this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
-        this.cameras.main.setZoom(2);
+        this.cameras.main.setZoom(3.0);
 
         // 9. Controles AWSD + Setas
         this.cursors = this.input.keyboard.createCursorKeys();

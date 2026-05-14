@@ -36,7 +36,7 @@ export class Preloader extends Scene {
         /* ========================================================= */
         
         // 1. O Mapa JSON do Tiled
-        this.load.tilemapTiledJSON('mapa-educash', '/Conteudo_educash/maps/educash_01.json');
+        this.load.tilemapTiledJSON('mapa-educash', '/Conteudo_educash/maps/mapa.json');
 
         // 2. O Tileset (A Foto do Chão e das paredes usada no Tiled)
         this.load.image('tiles-serene', '/Conteudo_educash/tilesets/Serene_Village_32x32.png');
