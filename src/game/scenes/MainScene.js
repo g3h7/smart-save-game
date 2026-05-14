@@ -48,7 +48,11 @@ export class MainScene extends Scene {
         // 7. Configurar Animações
         this.createPlayerAnimations();
 
+        // Limites físicos rígidos baseados no tamanho do mapa (60 tiles * 32px = 1920)
+        this.physics.world.setBounds(0, 0, 1920, 1920);
+
         // 8. Câmera seguindo o Player
+        this.cameras.main.setBounds(0, 0, 1920, 1920);
         this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
         this.cameras.main.setZoom(2);
 
