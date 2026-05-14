@@ -44,6 +44,11 @@ export class MainScene extends Scene {
         // 5. Configurar Colisões Estritas
         this.setupCollisionLayer(map, this.player);
 
+        // 6. Configurar Interações de Farm
+        this.setupInteractionLayer(map);
+        this.interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.farmCooldowns = JSON.parse(localStorage.getItem('educash_farm_cooldowns')) || {};
+
         // 7. Configurar Animações
         this.createPlayerAnimations();
 
@@ -135,6 +140,73 @@ export class MainScene extends Scene {
         }
     }
 
+    setupInteractionLayer(map) {
+        const interacoesLayer = map.getObjectLayer('Interacoes');
+        this.farmPoints = [];
+
+        if (interacoesLayer) {
+            interacoesLayer.objects.forEach(obj => {
+                if (obj.name && obj.name.startsWith('ponto_farm_')) {
+                    this.farmPoints.push({
+                        name: obj.name,
+                        x: obj.x + (obj.width || 0) / 2,
+                        y: obj.y + (obj.height || 0) / 2
+                    });
+                }
+            });
+            console.log(`Pontos de farm carregados: ${this.farmPoints.length}`);
+        } else {
+            console.warn('Camada "Interacoes" não encontrada. O sistema de farm pode não funcionar se não houver pontos criados.');
+        }
+    }
+
+    handleInteraction() {
+        const interactDistance = 50; // Distância máxima para interagir
+        const now = Date.now();
+        const cooldownTime = 90 * 1000; // 90 segundos
+
+        for (const point of this.farmPoints) {
+            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, point.x, point.y);
+            
+            if (dist < interactDistance) {
+                const lastFarmed = this.farmCooldowns[point.name] || 0;
+                
+                if (now - lastFarmed >= cooldownTime) {
+                    // Sucesso: ganha 20
+                    this.farmCooldowns[point.name] = now;
+                    localStorage.setItem('educash_farm_cooldowns', JSON.stringify(this.farmCooldowns));
+                    
+                    EventBus.emit('farm-money', 20);
+                    this.showFloatingText('+ $20', '#10b981', this.player.x, this.player.y - 30);
+                } else {
+                    // Em cooldown
+                    this.showFloatingText('Aguarde', '#ef4444', this.player.x, this.player.y - 30);
+                }
+                break; // Interage apenas com 1 ponto por vez
+            }
+        }
+    }
+
+    showFloatingText(msg, color, x, y) {
+        const text = this.add.text(x, y, msg, {
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            fontSize: '18px',
+            fontStyle: 'bold',
+            color: color,
+            stroke: '#0f172a',
+            strokeThickness: 4
+        }).setOrigin(0.5).setDepth(150);
+
+        this.tweens.add({
+            targets: text,
+            y: y - 40,
+            alpha: 0,
+            duration: 1500,
+            ease: 'Power1',
+            onComplete: () => text.destroy()
+        });
+    }
+
     createPlayerAnimations() {
         // Abaixo configuramos uma teoria clássica de spritesheets RPG 32x32:
         // Linha 0 (frames 0 a 2) = Andar pra Baixo
@@ -212,6 +284,11 @@ export class MainScene extends Scene {
                 else if (current.includes('up')) this.player.anims.play('idle-up');
                 else this.player.anims.play('idle-down');
             }
+        }
+
+        // Checar interação de Farm
+        if (Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+            this.handleInteraction();
         }
 
         // Aplicar a força física

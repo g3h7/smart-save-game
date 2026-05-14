@@ -6,6 +6,7 @@ import Modulos from './pages/Modulos';
 import Financas from './pages/Financas';
 import Personagem from './pages/Personagem';
 import Mapa from './pages/Mapa';
+import EconomyHUD from './components/EconomyHUD';
 
 export default function App() {
   const [activeRoute, setActiveRoute] = useState('inicio');
@@ -37,6 +38,7 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden relative font-sans">
+      <EconomyHUD />
       <Sidebar activeRoute={activeRoute} setActiveRoute={setActiveRoute} />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden">
