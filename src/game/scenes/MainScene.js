@@ -20,26 +20,11 @@ export class MainScene extends Scene {
             console.error('ERRO: Tileset "Serene_Village_32x32" não encontrado no JSON!');
         }
 
-        // 3. Criar as camadas de Tiles (Nomes exatos do novo JSON)
-        const chaoBase = map.createLayer('Chao_base verde', tileset, 0, 0);
-        const contorno = map.createLayer('Contorno', tileset, 0, 0);
-        const piso = map.createLayer('Piso', tileset, 0, 0);
-        const casas = map.createLayer('casas', tileset, 0, 0);
+        // 3. Funções específicas para carregar as camadas e colisões (conforme solicitado)
+        this.map = map;
+        this.loadMapLayers(map, tileset);
 
-        // 4. Configuração de Depths (Z-Index) com Verificação de Segurança
-        if (chaoBase) chaoBase.setDepth(0);
-        else console.warn('Camada "Chao_base verde" não encontrada!');
-
-        if (contorno) contorno.setDepth(1);
-        else console.warn('Camada "Contorno" não encontrada!');
-
-        if (piso) piso.setDepth(2);
-        else console.warn('Camada "Piso" não encontrada!');
-
-        if (casas) casas.setDepth(10); // Casas ficam acima do player
-        else console.warn('Camada "casas" não encontrada!');
-
-        // 5. Instanciar Player (Spawnpoint da camada 'Entidade')
+        // 4. Instanciar Player (Spawnpoint da camada 'Entidade')
         const spawnPoint = map.findObject('Entidade', obj => obj.name === 'Player');
         
         this.player = this.physics.add.sprite(
@@ -57,18 +42,8 @@ export class MainScene extends Scene {
         this.player.body.setSize(20, 16);
         this.player.body.setOffset(6, 16);
 
-        // 6. Colisões de Objetos (Camada 'Colisao')
-        // Convertendo objetos de retângulo do Tiled em corpos físicos estáticos
-        const collisionLayer = map.getObjectLayer('Colisao');
-        if (collisionLayer) {
-            const collisionGroup = this.physics.add.staticGroup();
-            collisionLayer.objects.forEach(obj => {
-                const wall = collisionGroup.create(obj.x + (obj.width / 2), obj.y + (obj.height / 2), null);
-                wall.setSize(obj.width, obj.height);
-                wall.setVisible(false); // Mantém invisível para não poluir o cenário
-            });
-            this.physics.add.collider(this.player, collisionGroup);
-        }
+        // 5. Configurar Colisões Estritas
+        this.setupCollisionLayer(map, this.player);
 
         // 7. Configurar Animações
         this.createPlayerAnimations();
@@ -87,6 +62,74 @@ export class MainScene extends Scene {
         };
 
         EventBus.emit('current-scene-ready', this);
+    }
+
+    /**
+     * Função para carregar as camadas visuais do mapa.
+     * Libera a passagem por padrão nestas camadas, pois não adiciona colliders a elas.
+     */
+    loadMapLayers(map, tileset) {
+        // Criar as camadas de Tiles (Nomes exatos do JSON)
+        // Mesmo dentro de grupos (Agrupar 1), o Phaser encontra pelo nome.
+        const chaoBase = map.createLayer('Chao_base verde', tileset, 0, 0);
+        const contorno = map.createLayer('Contorno', tileset, 0, 0);
+        const piso = map.createLayer('Piso', tileset, 0, 0);
+        const casas = map.createLayer('casas', tileset, 0, 0);
+
+        // Configuração de Depths (Z-Index) para garantir sobreposição correta
+        if (chaoBase) chaoBase.setDepth(0);
+        else console.warn('Camada "Chao_base verde" não encontrada no JSON!');
+
+        if (contorno) contorno.setDepth(1);
+        else console.warn('Camada "Contorno" não encontrada no JSON!');
+
+        if (piso) piso.setDepth(2);
+        else console.warn('Camada "Piso" não encontrada no JSON!');
+
+        if (casas) casas.setDepth(10); // Casas ficam acima do player
+        else console.warn('Camada "casas" não encontrada no JSON!');
+    }
+
+    /**
+     * Função ESPECÍFICA para a camada COLISAO.
+     * Onde houver objeto nesta camada, o personagem não passa.
+     * Libera passagem nas demais camadas (pois apenas esta recebe corpo físico sólido).
+     */
+    setupCollisionLayer(map, player) {
+        const collisionLayer = map.getObjectLayer('Colisao');
+        
+        if (collisionLayer) {
+            const collisionGroup = this.physics.add.staticGroup();
+            
+            collisionLayer.objects.forEach(obj => {
+                // Previne "colisões fantasmagóricas" ignorando objetos vazios, pontos ou marcações
+                if (!obj.width || !obj.height) return;
+
+                // Tiled exporta x, y como o canto superior esquerdo (Top-Left).
+                // Ao usar setOrigin(0, 0), o Phaser alinha o desenho e o corpo físico (body)
+                // perfeitamente com a coordenada absoluta do mundo, sem offsets extras de cálculo.
+                const debugRect = this.add.rectangle(
+                    obj.x, 
+                    obj.y, 
+                    obj.width, 
+                    obj.height, 
+                    0xff0000, 
+                    0.5 // Transparência
+                ).setOrigin(0, 0).setDepth(100); // Depth 100 força o desenho acima de todas as outras camadas
+                
+                // Transforma o retângulo visual em um corpo físico estático absoluto
+                this.physics.add.existing(debugRect, true);
+                
+                // Adiciona o corpo físico no grupo de colisão
+                collisionGroup.add(debugRect);
+            });
+
+            // Adiciona o colisor: o personagem SÓ para ao bater nesta collisionGroup
+            this.physics.add.collider(player, collisionGroup);
+            console.log("Sistema de colisão ativado para a camada 'Colisao' com debug visual habilitado.");
+        } else {
+            console.error('ERRO: Camada "Colisao" não encontrada no JSON!');
+        }
     }
 
     createPlayerAnimations() {

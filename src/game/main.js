@@ -5,8 +5,8 @@ import { Preloader } from './scenes/Preloader';
 // Configuração Profissional com Pixel Art Enabled (desliga Anti-Aliasing para Spritesheet)
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: '100%',
+    height: '100%',
     parent: 'game-container', // a ID da div no React
     backgroundColor: '#0f172a',
     pixelArt: true, // Essencial para STardew Valley / Tiled
@@ -18,9 +18,10 @@ const config = {
         }
     },
     scale: {
-        // Encaixa perfeitamente na div alocada pelo React SPA preservando o layout
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        // RESIZE garante que o WebGL interno sempre tenha a resolução real da div (1:1), 
+        // prevenindo que o CSS "estique" o canvas e cause a ilusão de offset ou distorção.
+        mode: Phaser.Scale.RESIZE,
+        parent: 'game-container'
     },
     scene: [
         Preloader,

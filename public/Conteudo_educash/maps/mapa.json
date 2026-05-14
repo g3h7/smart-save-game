@@ -1829,11 +1829,11 @@
         {
          "columns":4,
          "firstgid":856,
-         "image":"..\/sprites\/mafia - bold.png",
+         "image":"..\/sprites\/mafia_bold.png",
          "imageheight":128,
          "imagewidth":128,
          "margin":0,
-         "name":"mafia - bold",
+         "name":"mafia_bold",
          "objectalignment":"bottom",
          "spacing":0,
          "tilecount":16,

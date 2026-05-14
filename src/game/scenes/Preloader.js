@@ -36,13 +36,13 @@ export class Preloader extends Scene {
         /* ========================================================= */
         
         // 1. O Mapa JSON do Tiled
-        this.load.tilemapTiledJSON('mapa-educash', '/Conteudo_educash/maps/mapa.json');
+        this.load.tilemapTiledJSON('mapa-educash', '/Conteudo_educash/maps/educash_01.json');
 
         // 2. O Tileset (A Foto do Chão e das paredes usada no Tiled)
         this.load.image('tiles-serene', '/Conteudo_educash/tilesets/Serene_Village_32x32.png');
 
         // 3. A Matriz (Spritesheet) do seu personagem
-        this.load.spritesheet('player', '/Conteudo_educash/sprites/mafia - bold.png', { 
+        this.load.spritesheet('player', '/Conteudo_educash/sprites/mafia_bold.png', { 
             frameWidth: 32, 
             frameHeight: 32 
         });
