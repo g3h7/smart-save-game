@@ -8,37 +8,31 @@ function cx(...args) {
   return twMerge(clsx(args));
 }
 
-const mockInvestments = [
+const mockInvestmentsBase = [
   { 
     id: 'selic', 
-    title: 'Tesouro Selic', 
+    title: 'Tesouro Selic / CDI', 
     type: 'Renda Fixa', 
     risk: 'BAIXO', 
     date: '24/05/2025', 
-    rate: '0.85% a.m.', 
-    value: 2063, 
-    profit: 189,
-    rawVal: 2063,
+    rate: '1.1% a.m.', 
     color: '#10b981', // green
     history: [ 
       { name: 'Jan', val: 1874 }, { name: 'Fev', val: 1910 }, 
-      { name: 'Mar', val: 1950 }, { name: 'Abr', val: 2005 }, { name: 'Mai', val: 2063 } 
+      { name: 'Mar', val: 1950 }, { name: 'Abr', val: 2005 }
     ] 
   },
   { 
     id: 'cdb', 
-    title: 'CDB Banco Digital', 
+    title: 'CDB / Cofrinho', 
     type: 'Renda Fixa', 
     risk: 'BAIXO', 
     date: '10/12/2025', 
-    rate: '1.1% a.m.', 
-    value: 3307, 
-    profit: 137,
-    rawVal: 3307,
+    rate: '0.85% a.m.', 
     color: '#10b981', 
     history: [ 
       { name: 'Jan', val: 3170 }, { name: 'Fev', val: 3200 }, 
-      { name: 'Mar', val: 3240 }, { name: 'Abr', val: 3270 }, { name: 'Mai', val: 3307 } 
+      { name: 'Mar', val: 3240 }, { name: 'Abr', val: 3270 }
     ] 
   },
   { 
@@ -48,25 +42,46 @@ const mockInvestments = [
     risk: 'MÉDIO', 
     date: '13/10/2025', 
     rate: '0.75% a.m.', 
-    value: 3551, 
-    profit: 153, 
-    rawVal: 3551,
     color: '#f97316', // orange
     history: [ 
       { name: 'Jan', val: 3398 }, { name: 'Fev', val: 3450 }, 
-      { name: 'Mar', val: 3420 }, { name: 'Abr', val: 3480 }, { name: 'Mai', val: 3551 } 
+      { name: 'Mar', val: 3420 }, { name: 'Abr', val: 3480 }
     ] 
   }
 ];
 
+import { useEconomy } from '../contexts/EconomyContext';
+
 export default function Financas() {
+  const { globalState } = useEconomy();
   const [selectedId, setSelectedId] = useState(null);
-  const activeInvestment = mockInvestments.find(inv => inv.id === selectedId);
+
+  // Mapear os valores do globalState para os mocks
+  const activeInvestments = mockInvestmentsBase.map(inv => {
+    let rawVal = 0;
+    let profit = 0;
+    
+    if (inv.id === 'selic') rawVal = globalState.cdi;
+    else if (inv.id === 'cdb') rawVal = globalState.cofre;
+    else if (inv.id === 'fii') rawVal = globalState.fii; // assumindo que cotasFII é o valor por enquanto ou qtd
+    
+    // Simplificação para fins de demonstração (como o lucro individual não é salvo separado, usaremos o global ou apenas não mostramos profit)
+    // Para simplificar, o profit individual será vazio por enquanto, e o dashboard mostra o global
+    
+    return {
+      ...inv,
+      rawVal,
+      profit,
+      history: [...inv.history, { name: 'Atual', val: rawVal }]
+    };
+  });
+
+  const activeInvestment = activeInvestments.find(inv => inv.id === selectedId);
 
   // Totals for top cards
-  const totalInvested = 20593; // Fixed mockup value
-  const currentValue = 23072;
-  const totalProfit = 2479;
+  const currentValue = globalState.cdi + globalState.cofre;
+  const totalProfit = globalState.lucro;
+  const totalInvested = currentValue - totalProfit;
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 font-sans">
@@ -112,9 +127,9 @@ export default function Financas() {
           </div>
           
           <div className="flex-1 overflow-y-auto space-y-4 pr-2 pb-8">
-            {mockInvestments.map(inv => {
+            {activeInvestments.map(inv => {
               const isActive = selectedId === inv.id;
-              const isGain = inv.profit > 0;
+              const isGain = inv.profit >= 0;
               return (
                 <button 
                   key={inv.id}

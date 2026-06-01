@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trophy, Plus, UserCircle2 } from 'lucide-react';
 
-export default function Header() {
+export default function Header({ username, onLogout }) {
   return (
     <header className="h-20 bg-background flex items-center justify-between px-8 z-10 sticky top-0 relative before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-sidebar/10 before:to-transparent">
       
@@ -43,10 +43,23 @@ export default function Header() {
           <span>XP</span>
         </button>
 
-        {/* Profile Avatar */}
-        <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(17,24,39,0.06)] border-2 border-sidebar/10 hover:border-primary/50 transition-colors overflow-hidden">
-           <UserCircle2 size={32} className="text-gray-400" />
-        </button>
+        {/* Profile Avatar & Username */}
+        <div className="flex items-center gap-3">
+          <div className="flex flex-col items-end">
+            <span className="text-xs font-extrabold text-sidebar uppercase tracking-wider">{username || 'JOGADOR'}</span>
+            {onLogout && (
+              <button 
+                onClick={onLogout}
+                className="text-[9px] font-bold text-danger hover:underline cursor-pointer"
+              >
+                SAIR (LOGOUT)
+              </button>
+            )}
+          </div>
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(17,24,39,0.06)] border-2 border-sidebar/10 hover:border-primary/50 transition-colors overflow-hidden">
+             <UserCircle2 size={32} className="text-gray-400" />
+          </div>
+        </div>
       </div>
     </header>
   );

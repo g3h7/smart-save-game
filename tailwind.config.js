@@ -22,6 +22,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif', 'system-ui'],
         display: ['Outfit', 'sans-serif'], // For headings
+        pixel: ['"Press Start 2P"', 'cursive', 'monospace'],
       }
     },
   },

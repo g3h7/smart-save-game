@@ -143,6 +143,7 @@ export class MainScene extends Scene {
     setupInteractionLayer(map) {
         const interacoesLayer = map.getObjectLayer('Interacoes');
         this.farmPoints = [];
+        this.cdiPoints = [];
 
         if (interacoesLayer) {
             interacoesLayer.objects.forEach(obj => {
@@ -153,8 +154,15 @@ export class MainScene extends Scene {
                         y: obj.y + (obj.height || 0) / 2
                     });
                 }
+                if (obj.name && obj.name.startsWith('ponto_cdi')) {
+                    this.cdiPoints.push({
+                        name: obj.name,
+                        x: obj.x + (obj.width || 0) / 2,
+                        y: obj.y + (obj.height || 0) / 2
+                    });
+                }
             });
-            console.log(`Pontos de farm carregados: ${this.farmPoints.length}`);
+            console.log(`Pontos de farm carregados: ${this.farmPoints.length}, Pontos de CDI carregados: ${this.cdiPoints.length}`);
         } else {
             console.warn('Camada "Interacoes" não encontrada. O sistema de farm pode não funcionar se não houver pontos criados.');
         }
@@ -165,6 +173,21 @@ export class MainScene extends Scene {
         const now = Date.now();
         const cooldownTime = 90 * 1000; // 90 segundos
 
+        let interacted = false;
+
+        // Checar Interação com Banco (CDI/Cofre)
+        for (const point of this.cdiPoints) {
+            const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, point.x, point.y);
+            if (dist < interactDistance) {
+                EventBus.emit('open-investment-modal');
+                interacted = true;
+                break;
+            }
+        }
+
+        if (interacted) return;
+
+        // Checar Interação de Farm
         for (const point of this.farmPoints) {
             const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, point.x, point.y);
             

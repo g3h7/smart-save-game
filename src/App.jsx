@@ -6,10 +6,29 @@ import Modulos from './pages/Modulos';
 import Financas from './pages/Financas';
 import Personagem from './pages/Personagem';
 import Mapa from './pages/Mapa';
+import Login from './pages/Login';
 import EconomyHUD from './components/EconomyHUD';
+import InvestmentModal from './components/game/InvestmentModal';
 
 export default function App() {
   const [activeRoute, setActiveRoute] = useState('inicio');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+
+  const handleLogin = (name) => {
+    setUsername(name);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUsername('');
+    setActiveRoute('inicio');
+  };
+
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   // Simple Router Switch
   const renderContent = () => {
@@ -39,10 +58,11 @@ export default function App() {
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden relative font-sans">
       <EconomyHUD />
+      <InvestmentModal />
       <Sidebar activeRoute={activeRoute} setActiveRoute={setActiveRoute} />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        <Header />
+        <Header username={username} onLogout={handleLogout} />
         
         <main className="flex-1 overflow-y-auto p-8 relative">
           {renderContent()}
