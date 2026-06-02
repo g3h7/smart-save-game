@@ -21,99 +21,130 @@ const modulosData = [
 
 export default function Modulos() {
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 font-pixel selection:bg-[#fadb5f] selection:text-[#4a3319]">
       
       {/* Header Topic */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b-4 border-gray-200">
         <div className="flex items-center gap-3">
-          <BookOpen className="text-sidebar" size={32} strokeWidth={2.5} />
-          <h2 className="text-sidebar font-black text-2xl font-display">MÓDULOS DE APRENDIZADO</h2>
+          <div className="w-12 h-12 bg-[#734c31] border-4 border-[#4a3319] flex items-center justify-center pixel-shadow-sm">
+             <BookOpen className="text-white" size={20} />
+          </div>
+          <h2 className="text-[#52331c] text-lg font-bold uppercase tracking-wider">DIÁRIO DE ESTUDOS</h2>
         </div>
         
-        <div className="bg-white rounded-full shadow-sm border-2 border-sidebar/5 px-6 py-2.5 flex items-center gap-2">
-           <Star size={18} fill="#f97316" className="text-warning mb-0.5" />
-           <span className="font-extrabold text-sidebar text-sm tracking-wide">3/9 completos</span>
+        {/* Quest Tracker Display */}
+        <div className="bg-[#fff4e0] border-4 border-[#734c31] text-[#52331c] px-5 py-3 flex items-center gap-3 pixel-shadow-sm select-none">
+           <Star size={16} fill="#f97316" className="text-[#f97316]" />
+           <span className="font-bold text-[10px] tracking-wider uppercase">MISSÕES: 3/9 COMPLETAS</span>
         </div>
       </div>
 
-      {/* Grid of Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Grid of Cards styled as RPG wooden boxes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
         {modulosData.map((mod) => {
-          // Determina os estilos condicionalmente com as nossas cores de marca
           const isConcluido = mod.status === 'CONCLUÍDO';
           const isDisponivel = mod.status === 'DISPONÍVEL';
           const isBloqueado = mod.status === 'BLOQUEADO';
 
-          // Definicao do ícone circular principal
+          // Determina o ícone reativo da missão
           let MainIcon = Play;
           if (isBloqueado) MainIcon = Lock;
           else if (mod.type === 'QUIZ') MainIcon = isConcluido ? CheckCircle2 : ClipboardList;
-          else if (isConcluido) MainIcon = CheckCircle2; // Video concluído
-          
+          else if (isConcluido) MainIcon = CheckCircle2;
+
           return (
-            <div key={mod.id} className={cx(
-              "dashboard-card flex flex-col justify-between h-[220px]",
-              isBloqueado && "opacity-75 bg-gray-50 border-gray-200 shadow-none hover:border-gray-200"
-            )}>
-              {/* Card Header */}
-              <div className="flex items-start gap-4">
-                {/* Icon Background */}
-                <div className={cx(
-                  "w-12 h-12 rounded-full flex items-center justify-center shrink-0",
-                  isConcluido && "bg-primary text-white",
-                  isDisponivel && mod.type === 'QUIZ' && "bg-[#2563eb] text-white",
-                  isDisponivel && mod.type === 'VÍDEO' && "bg-[#147a6b] text-white", // Variante pro play do mockup (dark green)
-                  isBloqueado && "bg-gray-300 text-gray-500"
-                )}>
-                  <MainIcon size={24} strokeWidth={2.5} />
-                </div>
-                
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={cx(
-                      "text-[10px] uppercase font-black px-2 py-0.5 rounded-full tracking-wider",
-                      isConcluido && "bg-primary text-white",
-                      isDisponivel && "bg-warning text-white",
-                      isBloqueado && "text-gray-400 font-bold"
-                    )}>
-                      {mod.status}
-                    </span>
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{mod.type}</span>
-                  </div>
-                  <h3 className={cx(
-                    "font-bold text-base font-display leading-tight",
-                    isBloqueado ? "text-gray-500" : "text-sidebar"
+            <div 
+              key={mod.id} 
+              className={cx(
+                "bg-[#e5c59a] border-[6px] border-[#734c31] pixel-shadow-sm p-4 flex flex-col justify-between h-[270px] relative transition-transform hover:-translate-y-1 hover:brightness-105 active:scale-[0.98] duration-150 rounded-none",
+                isBloqueado && "opacity-75 bg-[#d2bfa6] border-[#8a6851] shadow-[4px_4px_0px_0px_#5c4535]"
+              )}
+            >
+              {/* Corner Pixel Hinges */}
+              <div className="absolute -top-[6px] -left-[6px] w-2 h-2 bg-[#4a3319]"></div>
+              <div className="absolute -top-[6px] -right-[6px] w-2 h-2 bg-[#4a3319]"></div>
+              <div className="absolute -bottom-[6px] -left-[6px] w-2 h-2 bg-[#4a3319]"></div>
+              <div className="absolute -bottom-[6px] -right-[6px] w-2 h-2 bg-[#4a3319]"></div>
+
+              <div>
+                {/* Card Header Section */}
+                <div className="flex items-start gap-3 border-b-2 border-[#734c31] pb-3">
+                  
+                  {/* Square Pixel Icon Container */}
+                  <div className={cx(
+                    "w-11 h-11 border-4 shrink-0 flex items-center justify-center rounded-none",
+                    isConcluido && "bg-[#5cb85c] border-[#2b612b] text-white",
+                    isDisponivel && mod.type === 'QUIZ' && "bg-[#2563eb] border-[#1d4ed8] text-white",
+                    isDisponivel && mod.type === 'VÍDEO' && "bg-[#10b981] border-[#047857] text-white",
+                    isBloqueado && "bg-[#9ca3af] border-[#4b5563] text-[#d1d5db]"
                   )}>
-                    {mod.title}
-                  </h3>
+                    <MainIcon size={18} strokeWidth={3} />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                      {/* Quest Status Badge */}
+                      <span className={cx(
+                        "text-[7px] font-bold px-1.5 py-0.5 border uppercase rounded-none tracking-widest",
+                        isConcluido && "bg-[#5cb85c] border-[#2b612b] text-white",
+                        isDisponivel && "bg-[#fadb5f] border-[#baa07b] text-[#52331c]",
+                        isBloqueado && "bg-[#9ca3af] border-[#4b5563] text-[#d1d5db]"
+                      )}>
+                        {mod.status}
+                      </span>
+                      <span className="text-[7px] text-[#52331c] font-black uppercase tracking-wider">
+                        {mod.type}
+                      </span>
+                    </div>
+
+                    <h3 className={cx(
+                      "font-bold text-[10px] leading-relaxed tracking-wide uppercase break-words font-display",
+                      isBloqueado ? "text-[#7a5d48]" : "text-[#52331c]"
+                    )}>
+                      {mod.title}
+                    </h3>
+                  </div>
                 </div>
+
+                {/* Quest/Card Description */}
+                <p className="text-[8px] text-[#52331c]/80 font-bold leading-loose my-3 line-clamp-3 uppercase">
+                  {mod.description}
+                </p>
               </div>
 
-              {/* Card Description */}
-              <p className="text-xs text-gray-400 font-medium leading-relaxed my-3 line-clamp-2">
-                {mod.description}
-              </p>
-
-              {/* Card Footer (XP & Button) */}
-              <div className="flex items-center justify-between mt-auto">
-                <div className="flex items-center gap-1.5 opacity-80">
-                  <Star size={14} className={cx("mb-0.5", isBloqueado ? "text-gray-400" : "text-warning", !isBloqueado && "fill-warning")} />
+              {/* Card Footer (XP rewards & Button Action) */}
+              <div className="flex items-center justify-between mt-auto pt-2 border-t-2 border-[#baa07b]/40">
+                <div className="flex items-center gap-1">
+                  <Star size={11} fill={isBloqueado ? "none" : "#f97316"} className={isBloqueado ? "text-[#7a5d48]" : "text-[#f97316] fill-[#f97316]"} />
                   <span className={cx(
-                    "text-xs font-black",
-                    isBloqueado ? "text-gray-400" : "text-warning"
+                    "text-[8px] font-black tracking-wider",
+                    isBloqueado ? "text-[#7a5d48]" : "text-[#f97316]"
                   )}>
                     +{mod.xp} XP
                   </span>
                 </div>
                 
-                <button className={cx(
-                  "text-xs font-black px-5 py-2.5 rounded-full shadow-sm transition-all active:scale-95",
-                  isBloqueado 
-                    ? "bg-gray-200 text-gray-400 cursor-not-allowed active:scale-100"
-                    : "bg-[#147a6b] hover:bg-[#0f6154] text-white" // Teal color from mockup
-                )}>
-                  {mod.btn}
-                </button>
+                {/* Submit Action Button */}
+                {isBloqueado ? (
+                  <button 
+                    disabled 
+                    className="text-[8px] font-bold px-3 py-2 bg-[#9ca3af] border-x-2 border-t-2 border-[#9ca3af] border-b-4 border-[#4b5563] text-[#d1d5db] cursor-not-allowed rounded-none opacity-80"
+                  >
+                    BLOQUEADO
+                  </button>
+                ) : isConcluido ? (
+                  <button 
+                    className="text-[8px] font-bold px-3 py-2 bg-[#fadb5f] border-x-2 border-t-2 border-[#fadb5f] border-b-4 border-[#baa07b] text-[#52331c] hover:brightness-105 active:translate-y-0.5 active:border-b-2 rounded-none transition-all cursor-pointer"
+                  >
+                    {mod.btn}
+                  </button>
+                ) : (
+                  <button 
+                    className="text-[8px] font-bold px-3 py-2 bg-[#5cb85c] border-x-2 border-t-2 border-[#5cb85c] border-b-4 border-[#2b612b] text-white hover:brightness-105 active:translate-y-0.5 active:border-b-2 rounded-none transition-all cursor-pointer"
+                  >
+                    {mod.btn}
+                  </button>
+                )}
               </div>
               
             </div>

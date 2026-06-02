@@ -35,15 +35,17 @@ export default function InvestmentModal() {
       return;
     }
 
-    // Processar o investimento
+    // Processar o investimento — acumula também o principal para cálculo de lucro real
     const updates = {
       saldo: globalState.saldo - val
     };
 
     if (selectedAsset === 'cofre') {
       updates.cofre = globalState.cofre + val;
+      updates.cofrePrincipal = (globalState.cofrePrincipal ?? 0) + val;
     } else {
       updates.cdi = globalState.cdi + val;
+      updates.cdiPrincipal = (globalState.cdiPrincipal ?? 0) + val;
     }
 
     updateEconomyState(updates);

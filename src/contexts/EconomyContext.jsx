@@ -11,7 +11,12 @@ export const EconomyProvider = ({ children }) => {
     cdi: 0,
     cofre: 0,
     fii: 0,
-    lucro: 0
+    lucro: 0,
+    xp: 0,
+    level: 1,
+    // Capital original aplicado (sem rendimentos) para cálculo de lucro por ativo
+    cdiPrincipal: 0,
+    cofrePrincipal: 0
   });
 
   const stateRef = useRef(globalState);
@@ -28,8 +33,12 @@ export const EconomyProvider = ({ children }) => {
       const cofre = parseFloat(localStorage.getItem('eduCash_cofre')) || 0;
       const fii = parseInt(localStorage.getItem('eduCash_fii'), 10) || 0;
       const lucro = parseFloat(localStorage.getItem('eduCash_lucro')) || 0;
+      const xp = parseInt(localStorage.getItem('eduCash_xp'), 10) || 0;
+      const level = parseInt(localStorage.getItem('eduCash_level'), 10) || 1;
+      const cdiPrincipal = parseFloat(localStorage.getItem('eduCash_cdiPrincipal')) || 0;
+      const cofrePrincipal = parseFloat(localStorage.getItem('eduCash_cofrePrincipal')) || 0;
 
-      setGlobalState({ saldo, cdi, cofre, fii, lucro });
+      setGlobalState({ saldo, cdi, cofre, fii, lucro, xp, level, cdiPrincipal, cofrePrincipal });
     } catch (e) {
       console.error('Failed to load economy data', e);
     }
@@ -42,9 +51,35 @@ export const EconomyProvider = ({ children }) => {
       localStorage.setItem('eduCash_cofre', newState.cofre.toString());
       localStorage.setItem('eduCash_fii', newState.fii.toString());
       localStorage.setItem('eduCash_lucro', newState.lucro.toString());
+      localStorage.setItem('eduCash_xp', (newState.xp ?? 0).toString());
+      localStorage.setItem('eduCash_level', (newState.level ?? 1).toString());
+      localStorage.setItem('eduCash_cdiPrincipal', (newState.cdiPrincipal ?? 0).toString());
+      localStorage.setItem('eduCash_cofrePrincipal', (newState.cofrePrincipal ?? 0).toString());
     } catch (e) {
       console.error('Failed to save economy data', e);
     }
+  };
+
+  // XP necessário para o próximo nível: 100 * nível atual
+  const xpParaProximoNivel = (level) => level * 100;
+
+  // Concede XP ao jogador, promovendo ao próximo nível se necessário
+  const gainXp = (amount) => {
+    setGlobalState(prev => {
+      let newXp = (prev.xp ?? 0) + amount;
+      let newLevel = prev.level ?? 1;
+      const xpNecessario = xpParaProximoNivel(newLevel);
+
+      if (newXp >= xpNecessario) {
+        newXp = newXp - xpNecessario;
+        newLevel = newLevel + 1;
+        EventBus.emit('level-up', newLevel);
+      }
+
+      const newState = { ...prev, xp: newXp, level: newLevel };
+      salvarDados(newState);
+      return newState;
+    });
   };
 
   const updateEconomyState = (updates) => {
@@ -108,7 +143,7 @@ export const EconomyProvider = ({ children }) => {
   }, []);
 
   return (
-    <EconomyContext.Provider value={{ globalState, updateEconomyState, carregarDados, salvarDados }}>
+    <EconomyContext.Provider value={{ globalState, updateEconomyState, carregarDados, salvarDados, gainXp, xpParaProximoNivel }}>
       {children}
     </EconomyContext.Provider>
   );

@@ -7,7 +7,15 @@ export default function EconomyHUD() {
   const { globalState } = useEconomy();
   const [toastMessage, setToastMessage] = useState(null);
 
+  const saldo = globalState?.saldo ?? 0;
+  const cdi = globalState?.cdi ?? 0;
+  const cofre = globalState?.cofre ?? 0;
+  const fii = globalState?.fii ?? 0;
+
   const formatCurrency = (value) => {
+    if (value === undefined || value === null || isNaN(value)) {
+      return 'R$ 0,00';
+    }
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
@@ -44,7 +52,7 @@ export default function EconomyHUD() {
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Saldo</span>
             </div>
             <span className="text-xl font-black text-emerald-400 drop-shadow-sm">
-              {formatCurrency(globalState.saldo)}
+              {formatCurrency(saldo)}
             </span>
           </div>
 
@@ -57,7 +65,7 @@ export default function EconomyHUD() {
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">CDI</span>
             </div>
             <span className="text-xl font-black text-blue-400 drop-shadow-sm">
-              {formatCurrency(globalState.cdi)}
+              {formatCurrency(cdi)}
             </span>
           </div>
 
@@ -70,7 +78,7 @@ export default function EconomyHUD() {
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Cofre</span>
             </div>
             <span className="text-xl font-black text-pink-400 drop-shadow-sm">
-              {formatCurrency(globalState.cofre)}
+              {formatCurrency(cofre)}
             </span>
           </div>
 
@@ -83,7 +91,7 @@ export default function EconomyHUD() {
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Cotas FII</span>
             </div>
             <span className="text-xl font-black text-purple-400 drop-shadow-sm">
-              {globalState.fii}
+              {fii}
             </span>
           </div>
 
