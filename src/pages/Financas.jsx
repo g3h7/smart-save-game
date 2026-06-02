@@ -78,23 +78,28 @@ export default function Financas() {
   const cofre         = globalState?.cofre           ?? 0;
   const fii           = globalState?.fii             ?? 0;
   const lucroTotal    = globalState?.lucro           ?? 0;
+
   // Capital original aplicado (sem rendimentos)
-  const cdiPrincipal   = globalState?.cdiPrincipal  ?? 0;
-  const cofrePrincipal = globalState?.cofrePrincipal ?? 0;
+  // Migração retroativa: se o jogador já tinha investimentos antes desta feature,
+  // usamos o valor atual como estimativa do principal (lucro começa do próximo ciclo)
+  const cdiPrincipalRaw   = globalState?.cdiPrincipal  ?? 0;
+  const cofrePrincipalRaw = globalState?.cofrePrincipal ?? 0;
+  const cdiPrincipal   = cdiPrincipalRaw   > 0 ? cdiPrincipalRaw   : cdi;   // fallback: valor atual
+  const cofrePrincipal = cofrePrincipalRaw > 0 ? cofrePrincipalRaw : cofre; // fallback: valor atual
 
   // ── Cálculos de lucro por ativo ─────────────────────────────────────────────
-  const lucroCDI   = Math.max(0, cdi   - cdiPrincipal);    // rendimento acumulado no CDI
-  const lucroCofre = Math.max(0, cofre - cofrePrincipal);  // rendimento acumulado no Cofre
-  const lucroFII   = 0; // FII não gera rendimento automático no motor atual
+  const lucroCDI   = Math.max(0, cdi   - cdiPrincipal);
+  const lucroCofre = Math.max(0, cofre - cofrePrincipal);
 
   // ── Totais do portfólio ──────────────────────────────────────────────────────
-  const totalPrincipal  = cdiPrincipal + cofrePrincipal + fii; // capital aplicado
-  const totalAtual      = cdi + cofre + fii;                    // valor atual (c/ rendimentos)
-  const totalLucro      = lucroCDI + lucroCofre;                // lucro real acumulado
+  const totalPrincipal = cdiPrincipal + cofrePrincipal + fii;
+  const totalAtual     = cdi + cofre + fii;
+  // Usa o lucroTotal do contexto como fonte principal (mais preciso — registra cada ciclo)
+  const totalLucro     = lucroTotal > 0 ? lucroTotal : (lucroCDI + lucroCofre);
 
   // % de rentabilidade geral
   const rentabilidadePercent = totalPrincipal > 0
-    ? ((totalAtual - totalPrincipal) / totalPrincipal * 100)
+    ? (totalLucro / totalPrincipal * 100)
     : 0;
 
   // ── Dados para o gráfico de distribuição (Pie) ──────────────────────────────

@@ -1,0 +1,27 @@
+CREATE DATABASE IF NOT EXISTS educash;
+USE educash;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS carteiras (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNIQUE NOT NULL,
+    saldo_disponivel DECIMAL(10,2) DEFAULT 0.00,
+    saldo_cdi DECIMAL(10,2) DEFAULT 0.00,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS investimentos_fii (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    fii_id VARCHAR(10) NOT NULL,
+    quantidade INT DEFAULT 0,
+    valor_atual DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

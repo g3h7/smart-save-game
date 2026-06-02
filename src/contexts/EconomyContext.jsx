@@ -35,8 +35,24 @@ export const EconomyProvider = ({ children }) => {
       const lucro = parseFloat(localStorage.getItem('eduCash_lucro')) || 0;
       const xp = parseInt(localStorage.getItem('eduCash_xp'), 10) || 0;
       const level = parseInt(localStorage.getItem('eduCash_level'), 10) || 1;
-      const cdiPrincipal = parseFloat(localStorage.getItem('eduCash_cdiPrincipal')) || 0;
-      const cofrePrincipal = parseFloat(localStorage.getItem('eduCash_cofrePrincipal')) || 0;
+
+      // Migração retroativa de principal:
+      // Se o jogador já tinha CDI/Cofre mas nunca registrou o principal,
+      // estimamos o principal como: valorAtual / (1 + taxaAcumulada)
+      // Simplificação segura: usa o valor atual como principal (lucro = 0 até próximo ciclo)
+      const rawCdiPrincipal   = parseFloat(localStorage.getItem('eduCash_cdiPrincipal'))   || 0;
+      const rawCofrePrincipal = parseFloat(localStorage.getItem('eduCash_cofrePrincipal')) || 0;
+
+      const cdiPrincipal   = rawCdiPrincipal   > 0 ? rawCdiPrincipal   : cdi;
+      const cofrePrincipal = rawCofrePrincipal > 0 ? rawCofrePrincipal : cofre;
+
+      // Persiste a migração imediatamente para não refazer toda vez
+      if (rawCdiPrincipal === 0 && cdi > 0) {
+        localStorage.setItem('eduCash_cdiPrincipal', cdi.toString());
+      }
+      if (rawCofrePrincipal === 0 && cofre > 0) {
+        localStorage.setItem('eduCash_cofrePrincipal', cofre.toString());
+      }
 
       setGlobalState({ saldo, cdi, cofre, fii, lucro, xp, level, cdiPrincipal, cofrePrincipal });
     } catch (e) {
