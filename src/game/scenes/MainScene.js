@@ -122,7 +122,7 @@ export class MainScene extends Scene {
                     obj.width, 
                     obj.height, 
                     0xff0000, 
-                    0.5 // Transparência
+                    collisionLayer.opacity !== undefined ? collisionLayer.opacity : 0.5 // Transparência da camada
                 ).setOrigin(0, 0).setDepth(100); // Depth 100 força o desenho acima de todas as outras camadas
                 
                 // Transforma o retângulo visual em um corpo físico estático absoluto
