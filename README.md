@@ -1,16 +1,57 @@
-# React + Vite
+# 🎮 EduCa$h — Educação Financeira Gamificada
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **EduCa$h** é um jogo 2D isométrico desenvolvido para transformar a educação financeira numa experiência prática, interativa e acessível. O projeto procura tirar investidores iniciantes da "zona cega" e desmistificar o medo de investir através da simulação de tomada de decisões financeiras e gestão de património.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📌 Funcionalidades do MVP
 
-## React Compiler
+Nesta versão **MVP (Minimum Viable Product)**, a aplicação conta com as seguintes áreas e mecânicas:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **🏠 Home:** Tela inicial do sistema com navegação para as áreas principais.
+* **📊 Dashboards:** Painel visual para acompanhamento de indicadores financeiros e métricas do jogador.
+* **🗺️ Mapa 2D Isométrico (Game):** Navegação e interação visual dentro do ambiente do jogo na aba do mapa.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tecnologias e Stack
+
+### **Front-end & Game Engine**
+* **React** (com **Vite**) — Interface reativa e estrutura de componentes.
+* **Tailwind CSS** & **PostCSS** — Estilização rápida e utilitária.
+* **Tiled Map Editor** — Criação e design dos mapas e tilesets em visão isométrica (32x32).
+
+### **Back-end & Banco de Dados**
+* **SQL (MySQL)** — Modelagem e scripts de base de dados para persistência do jogo (localizados na pasta `/database`, em desenvolvimento).
+
+---
+
+## 📁 Estrutura do Repositório
+
+```text
+Projeto Educash/
+├── database/          # Scripts SQL e modelagem de dados (em progresso)
+├── dist/              # Build otimizado de produção
+├── node_modules/      # Dependências do projeto
+├── public/            # Ficheiros estáticos (tilesets, imagens e JSONs do Tiled)
+├── src/
+│   ├── assets/        # Recursos visuais (ícones, imagens, fontes)
+│   ├── components/    # Componentes React reutilizáveis
+│   ├── contexts/      # Gerenciamento de estado global (React Context API)
+│   ├── game/          # Lógica do motor do jogo e mapa 2D
+│   ├── pages/         # Telas da aplicação (Home, Dashboard, Mapa)
+│   ├── App.css        # Estilos globais do componente App
+│   ├── App.jsx        # Componente principal do React
+│   ├── index.css      # Configuração global de estilos e diretivas do Tailwind
+│   └── main.jsx       # Ponto de entrada do React (Vite)
+├── .env               # Variáveis de ambiente locais (ignorado no Git)
+├── .gitignore         # Ficheiros e pastas ignorados pelo Git
+├── bun.lock            # Lockfile do gestor de pacotes Bun
+├── eslint.config.js   # Configuração de linter para padronização do código
+├── index.html         # Documento HTML principal da SPA
+├── package-lock.json  # Lockfile de dependências npm
+├── package.json       # Dependências e scripts do projeto
+├── postcss.config.js  # Configurações do PostCSS para processamento do CSS
+├── README.md          # Documentação do projeto
+├── tailwind.config.js # Configuração customizada do Tailwind CSS
+└── vite.config.js     # Configurações do ecossistema Vite
